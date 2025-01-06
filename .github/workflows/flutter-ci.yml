@@ -17,11 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Flutter environment
+      # Step 2: Set up Flutter with the correct version (ensure Dart version is compatible)
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.0.0'  # Specify your Flutter version
+          flutter-version: '3.6.0'  # Use the version that supports Dart 3.6.0
 
       # Step 3: Cache Flutter dependencies to speed up the build
       - name: Cache Flutter dependencies
