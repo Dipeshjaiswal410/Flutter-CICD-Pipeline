@@ -17,11 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Flutter with the correct version (ensure Dart version is compatible)
+      # Step 2: Set up Flutter with the latest stable version (should work with Dart 3.6)
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.6.0'  # Use the version that supports Dart 3.6.0
+          flutter-channel: stable  # Ensure it's using the stable channel
+          flutter-version: '3.3.9'  # Use the latest stable Flutter version (3.3.9)
 
       # Step 3: Cache Flutter dependencies to speed up the build
       - name: Cache Flutter dependencies
@@ -32,7 +33,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      # Step 4: Set Java home for Gradle compatibility (ensure correct Java version is used)
+      # Step 4: Set Gradle Java Home
       - name: Set Gradle Java Home
         run: echo "org.gradle.java.home=C:/Program Files/Java/jdk-17" >> gradle.properties
 
@@ -44,6 +45,6 @@ jobs:
       - name: Run tests
         run: flutter test
 
-      # Step 7: Build the app in debug mode (not release mode)
+      # Step 7: Build the app in debug mode
       - name: Build the app (Debug Mode)
         run: flutter build apk --debug
