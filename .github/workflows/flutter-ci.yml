@@ -17,12 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Flutter with the latest stable version (should work with Dart 3.6)
+      # Step 2: Set up Flutter with a version that includes Dart 3.6.0
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-channel: stable  # Ensure it's using the stable channel
-          flutter-version: '3.3.9'  # Use the latest stable Flutter version (3.3.9)
+          flutter-channel: stable  # Ensure it uses the stable channel (latest stable version)
+          flutter-version: '3.7.0'  # Use the Flutter version that includes Dart 3.6.0
 
       # Step 3: Cache Flutter dependencies to speed up the build
       - name: Cache Flutter dependencies
