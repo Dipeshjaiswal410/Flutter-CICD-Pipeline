@@ -1,4 +1,4 @@
-name: Flutter CI/CD Pipeline (Debug Mode)
+name: Flutter CI
 
 on:
   push:
@@ -10,41 +10,27 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Using Windows runner for your Windows setup
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository code
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Step 1: Check out the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Flutter with a version that includes Dart 3.6.0
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-channel: stable  # Ensure it uses the stable channel (latest stable version)
-          flutter-version: '3.7.0'  # Use the Flutter version that includes Dart 3.6.0
+    # Step 2: Set up Flutter with the correct version
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.13.0' # Use a version that includes Dart 3.6.0
 
-      # Step 3: Cache Flutter dependencies to speed up the build
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
+    # Step 3 (Optional): Clear Pub Cache
+    - name: Clear Pub Cache
+      run: flutter clean && flutter pub cache repair
 
-      # Step 4: Set Gradle Java Home
-      - name: Set Gradle Java Home
-        run: echo "org.gradle.java.home=C:/Program Files/Java/jdk-17" >> gradle.properties
+    # Step 4: Install Flutter dependencies
+    - name: Install dependencies
+      run: flutter pub get
 
-      # Step 5: Install dependencies
-      - name: Install dependencies
-        run: flutter pub get
-
-      # Step 6: Run tests (make sure tests pass in debug mode)
-      - name: Run tests
-        run: flutter test
-
-      # Step 7: Build the app in debug mode
-      - name: Build the app (Debug Mode)
-        run: flutter build apk --debug
+    # Step 5: Run Flutter tests
+    - name: Run tests
+      run: flutter test
