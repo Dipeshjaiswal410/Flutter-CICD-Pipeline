@@ -1,10 +1,7 @@
-name: Flutter CI
+name: Flutter CI/CD
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -13,24 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the repository
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 2: Set up Flutter with the correct version
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.13.0' # Use a version that includes Dart 3.6.0
+        flutter-version: '3.27.1' # Flutter version with Dart 3.6.0 support
 
-    # Step 3 (Optional): Clear Pub Cache
-    - name: Clear Pub Cache
-      run: flutter clean && flutter pub cache repair
-
-    # Step 4: Install Flutter dependencies
     - name: Install dependencies
       run: flutter pub get
 
-    # Step 5: Run Flutter tests
     - name: Run tests
       run: flutter test
