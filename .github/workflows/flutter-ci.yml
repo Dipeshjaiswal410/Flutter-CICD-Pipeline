@@ -18,6 +18,12 @@ jobs:
       with:
         flutter-version: '3.27.1' # Flutter version with Dart 3.6.0 support
 
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'adoptopenjdk'
+
     - name: Install dependencies
       run: flutter pub get
 
