@@ -1,0 +1,49 @@
+name: Flutter CI/CD Pipeline (Debug Mode)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Using Windows runner for your Windows setup
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Flutter environment
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'  # Specify your Flutter version
+
+      # Step 3: Cache Flutter dependencies to speed up the build
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # Step 4: Set Java home for Gradle compatibility (ensure correct Java version is used)
+      - name: Set Gradle Java Home
+        run: echo "org.gradle.java.home=C:/Program Files/Java/jdk-17" >> gradle.properties
+
+      # Step 5: Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Step 6: Run tests (make sure tests pass in debug mode)
+      - name: Run tests
+        run: flutter test
+
+      # Step 7: Build the app in debug mode (not release mode)
+      - name: Build the app (Debug Mode)
+        run: flutter build apk --debug
